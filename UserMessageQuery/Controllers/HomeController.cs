@@ -82,8 +82,8 @@ namespace UserMessageQuery.Controllers
 
             currentUser.Messages.Insert(0, userMessage);
 
-            _messageQuery.RemoveOldMessageByUserName(5, userName.Trim());
-            _messageQuery.RemoveOldMessage(10);
+            _messageQuery.RemoveOldMessageByUserName(10, userName.Trim());
+            _messageQuery.RemoveOldMessage(20);
 
             var users = _messageQuery.Users;
 
