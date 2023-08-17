@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <div class="border border-2 rounded w-50 p-2">
+            <form>
+                <div class="mb-3">
+                    <label for="inputUserName" class="form-label">User Name:</label>
+                    <input type="text" class="form-control" id="inputUserName">
+                </div>
+                <div class="mb-3">
+                    <label for="inputMessage" class="form-label">Message:</label>
+                    <input type="text" class="form-control" id="inputMessage">
+                </div>
+                <button id="form-submit" type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <div class="border border-2 rounded w-50 mt-2 p-2">
+            <h2 class="text-center fs-3">Messages all Users:</h2>
+            <table id="allMessageTable" class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Create Time</th>
+                        <th scope="col">Text</th>
+                    </tr>
+                </thead>
+                <tbody id="allMessageTableField">
+
+                </tbody>
+            </table>
+        </div>
+
+        <h2 class="text-center fs-3 mt-5">Find messages by User Name</h2>
+
+        <div class="border border-2 rounded w-50 mt-2 p-2">
+            <form>
+                <div class="mb-3">
+                    <label for="findUserName" class="form-label">User Name:</label>
+                    <input type="text" class="form-control" id="findUserName">
+                </div>
+                <button id="form-submit-username" type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <div class="border border-2 rounded w-50 mt-2 p-2">
+            <h2 id="findedUser" class="text-center fs-3">Messages Users:</h2>
+            <table id="userMessageTable" class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Create Time</th>
+                        <th scope="col">Text</th>
+                    </tr>
+                </thead>
+                <tbody id="userMessageTableField">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/AjaxMessageQuery.js" asp-append-version="true"></script>
