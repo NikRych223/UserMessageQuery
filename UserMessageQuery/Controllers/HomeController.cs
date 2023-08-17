@@ -18,8 +18,11 @@ namespace UserMessageQuery.Controllers
 
         public IActionResult Index()
         {
-            var users = _messageQuery.Users;
-            return View(users);
+            if (_messageQuery.Users.Count == 0) return View();
+
+            var messages = _messageQuery.Users.SelectMany(user => user.Messages.OrderBy(msg => msg.CreateTime)).ToList();
+
+            return View(messages);
         }
 
         [HttpGet]
@@ -51,43 +54,56 @@ namespace UserMessageQuery.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound("Server error");
+                return BadRequest("Server error");
             }
         }
 
         [HttpPost]
         public IActionResult AddMessageToQuery(string userName, string message)
         {
-            var currentUser = _messageQuery.Users.FirstOrDefault(user => user.UserName == userName.Trim());
+            if (message == null) return BadRequest("message is empty");
 
-            if (currentUser == null)
+            try
             {
-                var newUser = new User
+                var currentUser = _messageQuery.Users.FirstOrDefault(user => user.UserName == userName.Trim());
+
+                if (currentUser == null)
+                {
+                    var newUser = new User
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        UserName = userName.Trim(),
+                        Messages = new List<Message>()
+                    };
+
+                    _messageQuery.Users.Add(newUser);
+                    currentUser = newUser;
+                }
+
+                var userMessage = new Message
                 {
                     Id = Guid.NewGuid().ToString(),
-                    UserName = userName.Trim(),
-                    Messages = new List<Message>()
+                    Description = message,
+                    CreateTime = $"{DateTime.Now.Hour}/{DateTime.Now.Minute}/{DateTime.Now.Second}"
                 };
 
-                _messageQuery.Users.Add(newUser);
-                currentUser = newUser;
+                currentUser.Messages.Insert(0, userMessage);
+
+                _messageQuery.RemoveOldMessageByUserName(10, userName.Trim());
+                _messageQuery.RemoveOldMessage(20);
+
+                var users = _messageQuery.Users;
+
+                return Ok(users);
             }
-
-            var userMessage = new Message
+            catch (NullReferenceException ex)
             {
-                Id = Guid.NewGuid().ToString(),
-                Description = message,
-                CreateTime = $"{DateTime.Now.Hour}/{DateTime.Now.Minute}/{DateTime.Now.Second}"
-            };
-
-            currentUser.Messages.Insert(0, userMessage);
-
-            _messageQuery.RemoveOldMessageByUserName(10, userName.Trim());
-            _messageQuery.RemoveOldMessage(20);
-
-            var users = _messageQuery.Users;
-
-            return Ok(users);
+                return BadRequest("userName not found or empty");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Server error");
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

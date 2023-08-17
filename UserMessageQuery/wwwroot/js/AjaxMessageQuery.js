@@ -6,7 +6,10 @@
 
     $.post("/Home/AddMessageToQuery", { userName, message }, function () {
         loadMessages();
-    });
+    })
+        .fail(function () {
+            alert("Username or message is empty!");
+        });
 
     function loadMessages() {
         $.get("/Home/GetAllMessages")
@@ -22,7 +25,7 @@
                         '</tr>'
                     );
                 });
-            });
+            })
     }
 });
 
@@ -33,7 +36,6 @@ $("#form-submit-username").click(function (event) {
 
     $.get("/Home/GetMessagesByUserName", { userName })
         .done(function (data) {
-            console.log(data);
             $("#userMessageTableField").empty();
             $("#findedUser").text(`Messages Users: ${userName}`);
             $.each(data, function (index, message) {
