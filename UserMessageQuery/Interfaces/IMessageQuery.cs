@@ -6,6 +6,6 @@ namespace UserMessageQuery.Interfaces
     {
         public List<User> Users { get; set; }
         public void RemoveOldMessage(int maxAllMessages);
-        public void RemoveOldMessageByUserName(int maxUserMessages,string userName);
+        public void RemoveOldMessageByUserName(int maxUserMessages, string userName);
     }
 }

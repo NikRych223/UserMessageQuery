@@ -49,7 +49,7 @@ namespace UserMessageQuery.Controllers
             {
                 return NotFound("userName not found or empty");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return NotFound("Server error");
             }

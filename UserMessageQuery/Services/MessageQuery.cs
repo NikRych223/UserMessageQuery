@@ -17,7 +17,7 @@ namespace UserMessageQuery.Services
 
         public void RemoveOldMessage(int maxAllMessages)
         {
-            if(Users.Sum(user => user.Messages.Count) > maxAllMessages)
+            if (Users.Sum(user => user.Messages.Count) > maxAllMessages)
             {
                 var oldestMessage = Users.SelectMany(user => user.Messages).OrderBy(msg => msg.CreateTime).FirstOrDefault();
 
@@ -31,7 +31,7 @@ namespace UserMessageQuery.Services
         {
             var currentUser = Users.FirstOrDefault(user => user.UserName == userName);
 
-            if(currentUser.Messages.Count > maxUserMessages)
+            if (currentUser.Messages.Count > maxUserMessages)
             {
                 currentUser.Messages.RemoveAt(maxUserMessages);
             }
